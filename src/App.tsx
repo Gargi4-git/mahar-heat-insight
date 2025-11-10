@@ -11,6 +11,7 @@ import Predict from "./pages/Predict";
 import Dashboard from "./pages/Dashboard";
 import Simulator from "./pages/Simulator";
 import Recommendations from "./pages/Recommendations";
+import AIAdvisor from "./pages/AIAdvisor";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +22,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="flex min-h-screen flex-col">
+        <div className="min-h-screen flex flex-col bg-background">
           <Navbar />
           <main className="flex-1">
             <Routes>
@@ -31,7 +32,7 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/simulator" element={<Simulator />} />
               <Route path="/recommendations" element={<Recommendations />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/ai-advisor" element={<AIAdvisor />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

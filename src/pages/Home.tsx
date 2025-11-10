@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { AIInsightsWidget } from "@/components/AIInsightsWidget";
 import { 
   MapPin, 
   TrendingUp, 
@@ -9,7 +10,8 @@ import {
   Thermometer, 
   Activity,
   Leaf,
-  CloudRain
+  CloudRain,
+  Bot
 } from "lucide-react";
 
 const Home = () => {
@@ -37,6 +39,12 @@ const Home = () => {
       title: "Scenario Simulation",
       description: "Adjust environmental parameters and see real-time impact predictions on UHI and health risk.",
       link: "/simulator",
+    },
+    {
+      icon: Bot,
+      title: "AI Climate Advisor",
+      description: "Chat with Gemini AI for personalized mitigation strategies and educational climate insights.",
+      link: "/ai-advisor",
     },
   ];
 
@@ -67,8 +75,8 @@ const Home = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              AI-driven Urban Heat Island monitoring and prediction system for Maharashtra's regional clusters. 
-              Empowering data-driven climate action and public health planning.
+              AI for Cooler Cities — Together, we can beat the heat. Empowering data-driven climate action 
+              and public health planning across Maharashtra.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -204,6 +212,9 @@ const Home = () => {
           </Card>
         </div>
       </section>
+
+      {/* AI Insights Widget */}
+      <AIInsightsWidget />
     </div>
   );
 };

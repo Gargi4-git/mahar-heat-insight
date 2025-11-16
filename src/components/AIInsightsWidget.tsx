@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles, X, TrendingUp, AlertTriangle, Leaf } from "lucide-react";
+import { Sparkles, X, TrendingUp, AlertTriangle, Leaf, Brain } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface AIInsightsWidgetProps {
@@ -31,21 +31,21 @@ export const AIInsightsWidget = ({
         {!isOpen && (
           <Button
             onClick={() => setIsOpen(true)}
-            className="h-14 w-14 rounded-full bg-gradient-to-br from-primary via-secondary to-accent shadow-glow hover:shadow-glow-accent transition-smooth hover:scale-110"
+            className="h-14 w-14 rounded-full bg-gradient-to-br from-primary via-secondary to-accent shadow-glow hover:shadow-glow-accent transition-smooth hover:scale-110 animate-pulse-glow"
           >
-            <Sparkles className="h-6 w-6 text-white animate-pulse" />
+            <Brain className="h-6 w-6 text-white animate-pulse" />
           </Button>
         )}
 
         {/* Expanded Widget */}
         {isOpen && (
-          <Card className="w-80 bg-gradient-to-br from-card to-muted/30 border-primary/30 shadow-xl animate-scale-in">
+          <Card className="w-80 bg-gradient-to-br from-card to-muted/30 border-primary/30 shadow-xl animate-scale-in hover:shadow-2xl transition-all duration-300">
             <div className="p-4 space-y-4">
               {/* Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-lg">
-                    <Sparkles className="h-4 w-4 text-white" />
+                    <Brain className="h-4 w-4 text-white animate-pulse" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground text-sm">AI Insights</h3>
@@ -56,42 +56,43 @@ export const AIInsightsWidget = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsOpen(false)}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 hover:scale-110 transition-all duration-300"
                 >
                   <X className="h-4 w-4" />
                 </Button>
               </div>
 
               {/* Metrics */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+              <div className="grid grid-cols-2 gap-3 animate-fade-in">
+                <div className="p-3 bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20 rounded-lg hover:scale-105 transition-all duration-300 hover:shadow-lg">
                   <div className="flex items-center gap-2 mb-1">
-                    <TrendingUp className="h-3 w-3 text-orange-500" />
+                    <TrendingUp className="h-3 w-3 text-destructive animate-pulse" />
                     <span className="text-xs text-muted-foreground">UHI Score</span>
                   </div>
-                  <div className="text-xl font-bold text-orange-500">{uhiScore}°C</div>
+                  <div className="text-xl font-bold text-destructive animate-pulse">{uhiScore}°C</div>
                 </div>
-                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="p-3 bg-gradient-to-br from-orange-500/10 to-orange-500/5 border border-orange-500/20 rounded-lg hover:scale-105 transition-all duration-300 hover:shadow-lg">
                   <div className="flex items-center gap-2 mb-1">
-                    <AlertTriangle className="h-3 w-3 text-red-500" />
+                    <AlertTriangle className="h-3 w-3 text-orange-500 animate-pulse" />
                     <span className="text-xs text-muted-foreground">Health Risk</span>
                   </div>
-                  <div className="text-xl font-bold text-red-500">{healthRisk}</div>
+                  <div className="text-xl font-bold text-orange-500 animate-pulse">{healthRisk}</div>
                 </div>
               </div>
 
               {/* Top Suggestions */}
-              <div className="space-y-2">
+              <div className="space-y-2 animate-fade-in" style={{ animationDelay: "0.2s" }}>
                 <h4 className="text-xs font-semibold text-foreground flex items-center gap-1">
-                  <Leaf className="h-3 w-3 text-green-500" />
+                  <Sparkles className="h-3 w-3 text-primary animate-pulse" />
                   Top Mitigation Strategies
                 </h4>
                 <div className="space-y-2">
                   {suggestions.slice(0, 3).map((suggestion, idx) => (
                     <div
                       key={idx}
-                      className="p-2 bg-green-500/5 border border-green-500/10 rounded text-xs text-muted-foreground hover:bg-green-500/10 transition-smooth"
+                      className="p-2 bg-green-500/5 border border-green-500/10 rounded text-xs text-muted-foreground hover:bg-green-500/10 transition-smooth hover:scale-105"
                     >
+                      <span className="text-green-500 mr-2">🌳</span>
                       {suggestion}
                     </div>
                   ))}

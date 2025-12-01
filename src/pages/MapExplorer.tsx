@@ -14,8 +14,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: 19.7515,
-  lng: 75.7139,
+  lat: 19.0,
+  lng: 76.0,
 };
 
 const MapExplorer = () => {
@@ -36,10 +36,10 @@ const MapExplorer = () => {
       vegetation: 22,
       zone: "hot",
       boundary: [
-        { lat: 19.3, lng: 72.7 },
-        { lat: 19.3, lng: 73.1 },
-        { lat: 18.85, lng: 73.1 },
-        { lat: 18.85, lng: 72.7 },
+        { lat: 19.5, lng: 72.5 },
+        { lat: 19.5, lng: 73.5 },
+        { lat: 18.6, lng: 73.5 },
+        { lat: 18.6, lng: 72.5 },
       ],
     },
     {
@@ -50,10 +50,10 @@ const MapExplorer = () => {
       vegetation: 28,
       zone: "moderately-hot",
       boundary: [
-        { lat: 18.7, lng: 73.65 },
-        { lat: 18.7, lng: 74.05 },
-        { lat: 18.35, lng: 74.05 },
-        { lat: 18.35, lng: 73.65 },
+        { lat: 19.0, lng: 73.4 },
+        { lat: 19.0, lng: 74.6 },
+        { lat: 18.0, lng: 74.6 },
+        { lat: 18.0, lng: 73.4 },
       ],
     },
     {
@@ -64,10 +64,10 @@ const MapExplorer = () => {
       vegetation: 25,
       zone: "hot",
       boundary: [
-        { lat: 21.35, lng: 78.85 },
-        { lat: 21.35, lng: 79.35 },
-        { lat: 20.95, lng: 79.35 },
-        { lat: 20.95, lng: 78.85 },
+        { lat: 21.6, lng: 78.5 },
+        { lat: 21.6, lng: 79.8 },
+        { lat: 20.5, lng: 79.8 },
+        { lat: 20.5, lng: 78.5 },
       ],
     },
     {
@@ -78,10 +78,10 @@ const MapExplorer = () => {
       vegetation: 30,
       zone: "warm",
       boundary: [
-        { lat: 20.2, lng: 73.55 },
-        { lat: 20.2, lng: 74.05 },
-        { lat: 19.8, lng: 74.05 },
-        { lat: 19.8, lng: 73.55 },
+        { lat: 20.5, lng: 73.2 },
+        { lat: 20.5, lng: 75.0 },
+        { lat: 19.3, lng: 75.0 },
+        { lat: 19.3, lng: 73.2 },
       ],
     },
     {
@@ -92,10 +92,10 @@ const MapExplorer = () => {
       vegetation: 32,
       zone: "warm",
       boundary: [
-        { lat: 17.85, lng: 75.65 },
-        { lat: 17.85, lng: 76.15 },
-        { lat: 17.45, lng: 76.15 },
-        { lat: 17.45, lng: 75.65 },
+        { lat: 18.2, lng: 74.8 },
+        { lat: 18.2, lng: 76.8 },
+        { lat: 16.8, lng: 76.8 },
+        { lat: 16.8, lng: 74.8 },
       ],
     },
     {
@@ -106,10 +106,10 @@ const MapExplorer = () => {
       vegetation: 26,
       zone: "moderately-hot",
       boundary: [
-        { lat: 20.05, lng: 75.1 },
-        { lat: 20.05, lng: 75.6 },
-        { lat: 19.7, lng: 75.6 },
-        { lat: 19.7, lng: 75.1 },
+        { lat: 20.6, lng: 74.5 },
+        { lat: 20.6, lng: 76.5 },
+        { lat: 19.2, lng: 76.5 },
+        { lat: 19.2, lng: 74.5 },
       ],
     },
     {
@@ -120,10 +120,10 @@ const MapExplorer = () => {
       vegetation: 35,
       zone: "cold",
       boundary: [
-        { lat: 16.9, lng: 74.0 },
-        { lat: 16.9, lng: 74.5 },
-        { lat: 16.5, lng: 74.5 },
-        { lat: 16.5, lng: 74.0 },
+        { lat: 17.2, lng: 73.5 },
+        { lat: 17.2, lng: 74.9 },
+        { lat: 15.9, lng: 74.9 },
+        { lat: 15.9, lng: 73.5 },
       ],
     },
   ];
@@ -274,16 +274,30 @@ const MapExplorer = () => {
                   center={center}
                   zoom={7}
                   options={{
+                    restriction: {
+                      latLngBounds: {
+                        north: 22.0,
+                        south: 15.6,
+                        west: 72.6,
+                        east: 80.9,
+                      },
+                      strictBounds: false,
+                    },
                     styles: [
                       {
                         featureType: "all",
                         elementType: "geometry",
-                        stylers: [{ color: "#242f3e" }],
+                        stylers: [{ color: "#1a1a2e" }],
                       },
                       {
                         featureType: "water",
                         elementType: "geometry",
-                        stylers: [{ color: "#17263c" }],
+                        stylers: [{ color: "#0f172a" }],
+                      },
+                      {
+                        featureType: "road",
+                        elementType: "geometry",
+                        stylers: [{ color: "#374151" }],
                       },
                     ],
                   }}

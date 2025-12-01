@@ -87,6 +87,8 @@ const MapExplorer = () => {
   ];
 
   const getHeatmapData = (type: "uhi" | "health" | "vegetation") => {
+    if (typeof google === 'undefined') return [];
+    
     return clusters.map((cluster) => {
       let weight = 0;
       if (type === "uhi") weight = cluster.uhiScore / 10;
@@ -247,12 +249,16 @@ const MapExplorer = () => {
                       key={cluster.name}
                       position={cluster.coords}
                       onClick={() => handleClusterSelect(cluster.name)}
-                      icon={{
-                        url: getMarkerColor(cluster.zone),
-                        scaledSize: new google.maps.Size(40, 40),
-                      }}
+                      icon={
+                        typeof google !== 'undefined'
+                          ? {
+                              url: getMarkerColor(cluster.zone),
+                              scaledSize: new google.maps.Size(40, 40),
+                            }
+                          : undefined
+                      }
                       animation={
-                        activeMarker === cluster.name
+                        activeMarker === cluster.name && typeof google !== 'undefined'
                           ? google.maps.Animation.BOUNCE
                           : undefined
                       }

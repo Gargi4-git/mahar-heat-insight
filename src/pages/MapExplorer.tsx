@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow, HeatmapLayer } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker, InfoWindow, Polygon } from "@react-google-maps/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Flame, Heart, Leaf, MapPin } from "lucide-react";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyBWQf5cCXZL_HG7Wh6v3sJMZX0nv6YFHzY";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
-const libraries: ("visualization")[] = ["visualization"];
+const libraries: ("drawing" | "geometry")[] = ["drawing", "geometry"];
 
 const mapContainerStyle = {
   width: "100%",
@@ -35,6 +35,12 @@ const MapExplorer = () => {
       healthRisk: 7.2,
       vegetation: 22,
       zone: "hot",
+      boundary: [
+        { lat: 19.3, lng: 72.7 },
+        { lat: 19.3, lng: 73.1 },
+        { lat: 18.85, lng: 73.1 },
+        { lat: 18.85, lng: 72.7 },
+      ],
     },
     {
       name: "Pune",
@@ -43,6 +49,12 @@ const MapExplorer = () => {
       healthRisk: 6.5,
       vegetation: 28,
       zone: "moderately-hot",
+      boundary: [
+        { lat: 18.7, lng: 73.65 },
+        { lat: 18.7, lng: 74.05 },
+        { lat: 18.35, lng: 74.05 },
+        { lat: 18.35, lng: 73.65 },
+      ],
     },
     {
       name: "Nagpur-Wardha",
@@ -51,6 +63,12 @@ const MapExplorer = () => {
       healthRisk: 7.0,
       vegetation: 25,
       zone: "hot",
+      boundary: [
+        { lat: 21.35, lng: 78.85 },
+        { lat: 21.35, lng: 79.35 },
+        { lat: 20.95, lng: 79.35 },
+        { lat: 20.95, lng: 78.85 },
+      ],
     },
     {
       name: "Nashik-Ahmednagar",
@@ -59,6 +77,12 @@ const MapExplorer = () => {
       healthRisk: 6.3,
       vegetation: 30,
       zone: "warm",
+      boundary: [
+        { lat: 20.2, lng: 73.55 },
+        { lat: 20.2, lng: 74.05 },
+        { lat: 19.8, lng: 74.05 },
+        { lat: 19.8, lng: 73.55 },
+      ],
     },
     {
       name: "Solapur-Sangli",
@@ -67,6 +91,12 @@ const MapExplorer = () => {
       healthRisk: 6.0,
       vegetation: 32,
       zone: "warm",
+      boundary: [
+        { lat: 17.85, lng: 75.65 },
+        { lat: 17.85, lng: 76.15 },
+        { lat: 17.45, lng: 76.15 },
+        { lat: 17.45, lng: 75.65 },
+      ],
     },
     {
       name: "Aurangabad-Jalna",
@@ -75,6 +105,12 @@ const MapExplorer = () => {
       healthRisk: 6.8,
       vegetation: 26,
       zone: "moderately-hot",
+      boundary: [
+        { lat: 20.05, lng: 75.1 },
+        { lat: 20.05, lng: 75.6 },
+        { lat: 19.7, lng: 75.6 },
+        { lat: 19.7, lng: 75.1 },
+      ],
     },
     {
       name: "Kolhapur-Ichalkarangi",
@@ -83,20 +119,28 @@ const MapExplorer = () => {
       healthRisk: 5.5,
       vegetation: 35,
       zone: "cold",
+      boundary: [
+        { lat: 16.9, lng: 74.0 },
+        { lat: 16.9, lng: 74.5 },
+        { lat: 16.5, lng: 74.5 },
+        { lat: 16.5, lng: 74.0 },
+      ],
     },
   ];
 
-  const getHeatmapData = (type: "uhi" | "health" | "vegetation") => {
-    if (typeof google === 'undefined') return [];
-    
-    return clusters.map((cluster) => {
-      let weight = 0;
-      if (type === "uhi") weight = cluster.uhiScore / 10;
-      else if (type === "health") weight = cluster.healthRisk / 10;
-      else weight = (100 - cluster.vegetation) / 100;
-
-      return new google.maps.LatLng(cluster.coords.lat, cluster.coords.lng);
-    });
+  const getZoneColor = (zone: string) => {
+    switch (zone) {
+      case "hot":
+        return "#dc2626"; // red-600
+      case "moderately-hot":
+        return "#f97316"; // orange-500
+      case "warm":
+        return "#facc15"; // yellow-400
+      case "cold":
+        return "#22c55e"; // green-500
+      default:
+        return "#3b82f6"; // blue-500
+    }
   };
 
   const getMarkerColor = (zone: string) => {
@@ -244,6 +288,24 @@ const MapExplorer = () => {
                     ],
                   }}
                 >
+                  {/* Heat Zone Polygons */}
+                  {clusters.map((cluster) => (
+                    <React.Fragment key={`${cluster.name}-zone`}>
+                      <Polygon
+                        paths={cluster.boundary}
+                        options={{
+                          fillColor: getZoneColor(cluster.zone),
+                          fillOpacity: activeLayers.uhi ? 0.4 : 0.2,
+                          strokeColor: getZoneColor(cluster.zone),
+                          strokeOpacity: 0.8,
+                          strokeWeight: 2,
+                        }}
+                        onClick={() => handleClusterSelect(cluster.name)}
+                      />
+                    </React.Fragment>
+                  ))}
+
+                  {/* Markers */}
                   {clusters.map((cluster) => (
                     <Marker
                       key={cluster.name}
@@ -269,12 +331,16 @@ const MapExplorer = () => {
                             <h3 className="font-bold text-lg mb-2">{cluster.name}</h3>
                             <div className="space-y-1 text-sm">
                               <p>
+                                <span className="font-semibold">Zone:</span>{" "}
+                                <span className="capitalize">{cluster.zone.replace("-", " ")}</span>
+                              </p>
+                              <p>
                                 <span className="font-semibold">UHI Score:</span>{" "}
-                                {cluster.uhiScore}
+                                {cluster.uhiScore}/10
                               </p>
                               <p>
                                 <span className="font-semibold">Health Risk:</span>{" "}
-                                {cluster.healthRisk}
+                                {cluster.healthRisk}/10
                               </p>
                               <p>
                                 <span className="font-semibold">Vegetation:</span>{" "}
@@ -287,21 +353,6 @@ const MapExplorer = () => {
                     </Marker>
                   ))}
 
-                  {activeLayers.uhi && (
-                    <HeatmapLayer
-                      data={getHeatmapData("uhi")}
-                      options={{
-                        radius: 50,
-                        opacity: 0.6,
-                        gradient: [
-                          "rgba(0, 255, 0, 0)",
-                          "rgba(255, 255, 0, 1)",
-                          "rgba(255, 165, 0, 1)",
-                          "rgba(255, 0, 0, 1)",
-                        ],
-                      }}
-                    />
-                  )}
                 </GoogleMap>
               </LoadScript>
             </Card>
